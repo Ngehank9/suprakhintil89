@@ -11,18 +11,9 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'netflix-cookie-manager-secret-2024'
     
-    database_url = os.environ.get('DATABASE_URL', '').strip()
-    # Pastikan database_url tidak kosong dan merupakan URL postgres yang valid
-    if database_url and (database_url.startswith("postgres://") or database_url.startswith("postgresql://")):
-        if database_url.startswith("postgres://"):
-            database_url = database_url.replace("postgres://", "postgresql+pg8000://", 1)
-        elif database_url.startswith("postgresql://"):
-            database_url = database_url.replace("postgresql://", "postgresql+pg8000://", 1)
-        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'cookies.db'
-        )
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'cookies.db'
+    )
         
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB upload limit
