@@ -15,7 +15,9 @@ def create_app():
     # Pastikan database_url tidak kosong dan merupakan URL postgres yang valid
     if database_url and (database_url.startswith("postgres://") or database_url.startswith("postgresql://")):
         if database_url.startswith("postgres://"):
-            database_url = database_url.replace("postgres://", "postgresql://", 1)
+            database_url = database_url.replace("postgres://", "postgresql+pg8000://", 1)
+        elif database_url.startswith("postgresql://"):
+            database_url = database_url.replace("postgresql://", "postgresql+pg8000://", 1)
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
