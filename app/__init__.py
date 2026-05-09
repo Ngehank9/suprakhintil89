@@ -10,9 +10,17 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'netflix-cookie-manager-secret-2024'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'cookies.db'
-    )
+    
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url:
+        if database_url.startswith("postgres://"):
+            database_url = database_url.replace("postgres://", "postgresql://", 1)
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'cookies.db'
+        )
+        
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB upload limit
     app.config['MAX_FORM_PARTS'] = 10000       # Support 10000+ file parts
