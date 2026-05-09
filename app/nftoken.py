@@ -6,15 +6,10 @@ import os
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 
-CHECKER_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-    'Netflix-Cookie-Checker-main'
-)
-sys.path.insert(0, CHECKER_DIR)
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 try:
-    from main import (
+    from .netflix_checker_main import (
         create_nftoken,
         build_nftoken_links,
         has_usable_nftoken,

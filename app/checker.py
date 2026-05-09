@@ -7,18 +7,11 @@ import os
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 
-# Add the checker directory to path
-CHECKER_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-    'Netflix-Cookie-Checker-main'
-)
-sys.path.insert(0, CHECKER_DIR)
-
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-# Import core functions from main.py
+# Import core functions from local netflix_checker_main.py
 try:
-    from main import (
+    from .netflix_checker_main import (
         extract_netflix_cookie_bundles,
         cookies_dict_from_netscape,
         has_required_netflix_cookies,
@@ -141,7 +134,7 @@ def parse_proxy_text(proxy_text: str) -> list:
     if not CHECKER_AVAILABLE:
         return []
     try:
-        from main import _parse_proxy_line
+        from .netflix_checker_main import _parse_proxy_line
         proxies = []
         for line in proxy_text.splitlines():
             p = _parse_proxy_line(line)
